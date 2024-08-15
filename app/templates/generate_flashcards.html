@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>Generate Flashcards</h2>
+<form method="POST">
+    <label for="concepts">Enter Concepts:</label><br>
+    <input type="text" name="concepts" placeholder="e.g., Variables, Loops, Functions"><br><br>
+
+    <label for="language">Select Programming Language:</label><br>
+    <select name="language">
+        <option value="Python">Python</option>
+        <option value="JavaScript">JavaScript</option>
+        <option value="C++">C++</option>
+    </select><br><br>
+
+    <input type="submit" value="Generate Flashcards">
+</form>
+{% endblock %}

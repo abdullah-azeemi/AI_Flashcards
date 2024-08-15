@@ -1,0 +1,9 @@
+Flask
+Flask-SQLAlchemy
+Flask-Login
+Flask-WTF
+stripe
+requests
+email-validator
+python-dotenv
+Flask-Migrate
