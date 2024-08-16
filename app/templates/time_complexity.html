@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>Time Complexity Quiz</h2>
+<p>Analyze the following code snippet and guess its time complexity:</p>
+<pre>{{ code_snippet }}</pre>
+<form method="POST">
+    <label for="complexity">Your Guess:</label><br>
+    <select name="complexity">
+        <option value="O(1)">O(1)</option>
+        <option value="O(n)">O(n)</option>
+        <option value="O(n^2)">O(n^2)</option>
+        <option value="O(log n)">O(log n)</option>
+        <option value="O(n log n)">O(n log n)</option>
+    </select><br><br>
+    <input type="submit" value="Submit Answer">
+</form>
+{% endblock %}

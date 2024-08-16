@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>Your Coding Problems</h2>
+{% if problems %}
+    <ul>
+    {% for problem in problems %}
+        <li>
+            <a href="{{ problem.problem_link }}" target="_blank">{{ problem.problem_link }}</a> - 
+            {% if problem.solved %}
+                Solved
+            {% else %}
+                Not Solved
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No problems assigned yet.</p>
+{% endif %}
+<a href="{{ url_for('solve_problem') }}">Get a New Problem</a>
+{% endblock %}
