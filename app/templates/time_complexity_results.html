@@ -1,18 +1,26 @@
 {% extends "layout.html" %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/time_complexity_results.css') }}">
+{% endblock %}
 {% block content %}
-<h2>Your Time Complexity Quiz Results</h2>
-{% if quizzes %}
-    <ul>
-    {% for quiz in quizzes %}
-        <li>
-            <pre>{{ quiz.code_snippet }}</pre>
-            Your Guess: {{ quiz.user_guess }} - Correct Answer: {{ quiz.correct_complexity }}<br>
-            {% if quiz.correct %}
-                <span style="color: green;">Correct</span>
-            {% else %}
-                <span style="color: red;">Incorrect</span>
-            {% endif %}
-        </li>
-    {% endfor %}
-    </ul>
-{% else
+<div class="time-complexity-results-container">
+    <h2>Your Time Complexity Quiz Results</h2>
+    {% if quizzes %}
+        <ul class="quiz-results-list">
+        {% for quiz in quizzes %}
+            <li class="quiz-result-item">
+                <pre class="code-snippet">{{ quiz.code_snippet }}</pre>
+                Your Guess: {{ quiz.user_guess }} - Correct Answer: {{ quiz.correct_complexity }}<br>
+                {% if quiz.correct %}
+                    <span class="result correct">Correct</span>
+                {% else %}
+                    <span class="result incorrect">Incorrect</span>
+                {% endif %}
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No quiz results available.</p>
+    {% endif %}
+</div>
+{% endblock %}

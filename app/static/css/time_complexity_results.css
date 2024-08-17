@@ -1,0 +1,48 @@
+.time-complexity-results-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+
+.time-complexity-results-container h2 {
+    color: #6200ea;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.quiz-results-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.quiz-result-item {
+    background: #f7f7f7;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+}
+
+.code-snippet {
+    background: #f5f5f5;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow-x: auto;
+}
+
+.result {
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.correct {
+    color: #4caf50; /* Green for correct */
+}
+
+.incorrect {
+    color: #f44336; /* Red for incorrect */
+}

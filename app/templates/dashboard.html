@@ -1,30 +1,34 @@
 {% extends "layout.html" %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
 {% block content %}
-<div class="container">
+<div class="dashboard-container">
     <h2>Dashboard</h2>
+    
     <div class="metrics">
         <h3>Your Performance Metrics</h3>
-        <ul>
-            <li>Total Correct Flashcard Answers: {{ user.correct_answers }}</li>
-            <li>Total Problems Solved: {{ user.problems_solved }}</li>
-            <li>Correct Time Complexity Guesses: {{ user.time_complexity_quizzes_correct }}</li>
+        <ul class="metrics-list">
+            <li><strong>Total Correct Flashcard Answers:</strong> {{ user.correct_answers }}</li>
+            <li><strong>Total Problems Solved:</strong> {{ user.problems_solved }}</li>
+            <li><strong>Correct Time Complexity Guesses:</strong> {{ user.time_complexity_quizzes_correct }}</li>
         </ul>
     </div>
 
     <div class="actions">
         <h3>Quick Actions</h3>
-        <ul>
-            <li><a href="{{ url_for('generate_flashcards') }}">Generate New Flashcards</a></li>
-            <li><a href="{{ url_for('solve_problem') }}">Solve a Coding Problem</a></li>
-            <li><a href="{{ url_for('time_complexity') }}">Take a Time Complexity Quiz</a></li>
-            <li><a href="{{ url_for('forum') }}">Visit the Forum</a></li>
-            <li><a href="{{ url_for('checkout') }}">Upgrade to Premium</a></li>
+        <ul class="actions-list">
+            <li><a class="btn btn-secondary" href="{{ url_for('generate_flashcards') }}">Generate New Flashcards</a></li>
+            <li><a class="btn btn-secondary" href="{{ url_for('solve_problem') }}">Solve a Coding Problem</a></li>
+            <li><a class="btn btn-secondary" href="{{ url_for('time_complexity') }}">Take a Time Complexity Quiz</a></li>
+            <li><a class="btn btn-secondary" href="{{ url_for('forum') }}">Visit the Forum</a></li>
+            <li><a class="btn btn-secondary" href="{{ url_for('checkout') }}">Upgrade to Premium</a></li>
         </ul>
     </div>
 
     <div class="history">
         <h3>Recent Activity</h3>
-        <ul>
+        <ul class="history-list">
             <li>Generated flashcards on {{ user.last_flashcard_date }}</li>
             <li>Solved a problem on {{ user.last_problem_solved_date }}</li>
             <li>Last time complexity quiz taken on {{ user.last_time_complexity_quiz_date }}</li>
