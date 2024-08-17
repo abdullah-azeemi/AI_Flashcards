@@ -1,0 +1,73 @@
+.dashboard-container {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-container h2 {
+    color: #6200ea;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.metrics, .actions, .history {
+    margin-bottom: 30px;
+}
+
+.metrics h3, .actions h3, .history h3 {
+    color: #333;
+    border-bottom: 2px solid #6200ea;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.metrics-list, .actions-list, .history-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.metrics-list li, .history-list li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.actions-list li {
+    margin-bottom: 10px;
+}
+
+.actions-list a {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #6200ea;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.actions-list a:hover {
+    background-color: #3700b3;
+}
+
+.btn-secondary {
+    background-color: #6200ea;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: inline-block;
+    text-align: center;
+}
+
+.btn-secondary:hover {
+    background-color: #3700b3;
+}
+
+.metrics-list li strong, .history-list li {
+    color: #555;
+}

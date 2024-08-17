@@ -1,0 +1,69 @@
+/* Login Page Styling */
+.login-content {
+    max-width: 400px; /* Standard width for modern forms */
+    margin: 50px auto;
+    background: #fff; /* White background for a clean look */
+    padding: 40px; /* More padding for a spacious feel */
+    border-radius: 12px; /* Slightly more rounded corners */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    box-sizing: border-box; /* Ensure padding is included in width */
+    border: 1px solid #e0e0e0; /* Light border for subtle definition */
+}
+
+/* Heading */
+.login-content h2 {
+    text-align: center;
+    color: #6200ea; /* Primary color */
+    margin-bottom: 30px; /* Increased margin for better spacing */
+    font-size: 1.75rem; /* Prominent font size */
+    font-weight: 700; /* Bold font for emphasis */
+}
+
+/* Form Group */
+.login-content .form-group {
+    margin-bottom: 20px;
+}
+
+.login-content .form-group label {
+    display: block;
+    font-weight: 500; /* Medium weight for labels */
+    color: #333; /* Dark color for readability */
+    margin-bottom: 5px; /* Space between label and input */
+}
+
+/* Input Fields */
+.login-content .form-group input {
+    width: 100%;
+    padding: 15px; /* Ample padding for usability */
+    border: 1px solid #ccc; /* Light border color */
+    border-radius: 8px; /* Rounded corners for modern look */
+    font-size: 1rem; /* Consistent font size */
+    box-sizing: border-box; /* Include padding in width */
+}
+
+/* Primary Button */
+.login-content .btn-primary {
+    width: 100%;
+    padding: 15px;
+    background-color: #6200ea; /* Primary color */
+    color: #fff;
+    border: none;
+    border-radius: 8px; /* Rounded corners */
+    font-size: 1rem; /* Consistent font size */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-weight: 600; /* Slightly bold for emphasis */
+}
+
+.login-content .btn-primary:hover {
+    background-color: #3700b3; /* Darker shade on hover */
+    transform: translateY(-2px); /* Lift effect */
+}
+
+/* Additional Text */
+.login-content p {
+    text-align: center;
+    margin-top: 20px;
+    color: #666; /* Subtle color for additional text */
+    font-size: 0.875rem; /* Smaller font size for secondary text */
+}

@@ -1,14 +1,22 @@
 {% extends "layout.html" %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/flashcards.css') }}">
+{% endblock %}
 {% block content %}
-<h2>Your Flashcards</h2>
-{% if flashcards %}
-    <ul>
-    {% for flashcard in flashcards %}
-        <li><strong>{{ flashcard.concept }}:</strong> {{ flashcard.answer }} (Language: {{ flashcard.language }})</li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No flashcards saved yet.</p>
-{% endif %}
-<a href="{{ url_for('generate_flashcards') }}">Generate More Flashcards</a>
+<div class="flashcards-content">
+    <h2>Your Flashcards</h2>
+    {% if flashcards %}
+        <ul class="flashcard-list">
+        {% for flashcard in flashcards %}
+            <li class="flashcard-item">
+                <strong>{{ flashcard.concept }}:</strong> {{ flashcard.answer }} 
+                <span class="flashcard-language">(Language: {{ flashcard.language }})</span>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No flashcards saved yet.</p>
+    {% endif %}
+    <a class="btn btn-primary" href="{{ url_for('generate_flashcards') }}">Generate More Flashcards</a>
+</div>
 {% endblock %}
