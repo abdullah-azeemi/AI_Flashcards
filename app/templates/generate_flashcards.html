@@ -1,26 +1,23 @@
 {% extends "layout.html" %}
-{% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/generate_flashcards.css') }}">
-{% endblock %}
 {% block content %}
-<div class="generate-flashcards-content">
-    <h2>Generate Flashcards</h2>
-    <form method="POST" class="generate-flashcards-form">
+<div class="container mt-4">
+    <h2 class="mb-4">Generate Flashcards</h2>
+    <form method="POST">
         <div class="form-group">
-            <label for="concepts">Enter Concepts:</label><br>
-            <input type="text" name="concepts" class="form-control" placeholder="e.g., Variables, Loops, Functions">
+            <label for="concepts" class="form-label">Enter Concepts:</label>
+            <input type="text" name="concepts" id="concepts" class="form-control" placeholder="e.g., Variables, Loops, Functions">
         </div>
 
         <div class="form-group">
-            <label for="language">Select Programming Language:</label><br>
-            <select name="language" class="form-control">
+            <label for="language" class="form-label">Select Programming Language:</label>
+            <select name="language" id="language" class="form-control">
                 <option value="Python">Python</option>
                 <option value="JavaScript">JavaScript</option>
                 <option value="C++">C++</option>
             </select>
         </div>
 
-        <input type="submit" value="Generate Flashcards" class="btn btn-primary">
+        <button type="submit" class="btn btn-primary">Generate Flashcards</button>
     </form>
 </div>
 {% endblock %}

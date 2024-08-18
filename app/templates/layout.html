@@ -4,80 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}CodeFlash Academy{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="nav-wrapper">
-                <a href="#home" class="brand-logo">CodeFlash Academy</a>
-                <ul class="nav-links">
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#pricing">Pricing</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-                <div class="auth-menu">
-                    {% if current_user.is_authenticated %}
-                        <a href="{{ url_for('dashboard') }}" class="btn-auth">Dashboard</a>
-                        <a href="{{ url_for('logout') }}" class="btn-auth">Logout</a>
-                    {% else %}
-                        <div class="dropdown">
-                            <button class="dropbtn">Account</button>
-                            <div class="dropdown-content">
-                                <a href="{{ url_for('login') }}">Login</a>
-                                <a href="{{ url_for('register') }}">Sign Up</a>
-                            </div>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-        </nav>
-    </header>
-    <section id="home" class="home-section">
-        <div class="home-info">
-            <h1>Welcome to CodeFlash Academy</h1>
-            <p>Your ultimate AI SaaS platform designed to make learning coding and computer science easier and more efficient.</p>
-            <a href="#get-started" class="btn-get-started">Get Started</a>
-        </div>
-    </section>
-    <section id="about" class="info-section">
-        <div class="container">
-            <h2>About Us</h2>
-            <p>At CodeFlash Academy, we are committed to revolutionizing the way you learn and practice coding. Our platform provides AI-generated flashcards, quizzes, and coding problems tailored to help you master programming concepts efficiently. Whether you are a beginner or an experienced coder, our tools are designed to support your learning journey with personalized feedback and insights.</p>
-            <p>Our mission is to simplify learning and help you achieve your coding goals through interactive and engaging methods. Join us and be a part of a community dedicated to coding excellence.</p>
-        </div>
-    </section>
-    <section id="pricing" class="info-section">
-        <div class="container">
-            <h2>Pricing</h2>
-            <div class="pricing-card">
-                <h3>Premium Access</h3>
-                <p>Unlock all features of CodeFlash Academy with our Premium Access. Enjoy unlimited flashcards, advanced quizzes, and priority support.</p>
-                <ul>
-                    <li>Unlimited Flashcards</li>
-                    <li>Advanced Time Complexity Quizzes</li>
-                    <li>Priority Support</li>
-                </ul>
-                <p><strong>One-Time Purchase: $19.99</strong></p>
-                <a href="{{ url_for('checkout') }}" class="btn-primary">Purchase Now</a>
-            </div>
-        </div>
-    </section>
-    <section id="contact" class="info-section">
-        <div class="container">
-            <h2>Contact Us</h2>
-            <p>If you have any questions, feedback, or need support, feel free to reach out to us. We are here to help you!</p>
-            <ul class="contact-info">
-                <li><strong>Email:</strong> support@codeflashacademy.com</li>
-                <li><strong>Phone:</strong> +1-800-123-4567</li>
-                <li><strong>Address:</strong> 123 Code Street, Programming City, PC 12345</li>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{{ url_for('home') }}">CodeFlash Academy</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('register') }}">Sign Up</a>
+                    </li>
+                {% endif %}
             </ul>
-            <p>You can also follow us on <a href="#">Twitter</a>, <a href="#">Facebook</a>, and <a href="#">LinkedIn</a>.</p>
         </div>
-    </section>
-    <footer>
-        <p>&copy; 2024 CodeFlash Academy</p>
+    </nav>
+    <!-- Main Content -->
+    <div class="container mt-4">
+        {% block content %}{% endblock %}
+    </div>
+    <!-- Footer -->
+    <footer class="bg-light text-center py-3">
+        <p class="mb-0">&copy; 2024 CodeFlash Academy</p>
     </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -1,12 +1,9 @@
 {% extends "layout.html" %}
-{% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/checkout.css') }}">
-{% endblock %}
 {% block content %}
-<div class="checkout-container cancel">
-    <h2>Checkout Cancelled</h2>
-    <p>Your checkout process was cancelled. If this was a mistake, you can try again.</p>
-    <a href="{{ url_for('checkout') }}" class="btn btn-primary">Try Again</a>
-    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Go to Dashboard</a>
+<div class="container mt-4 text-center">
+    <h2 class="mb-4">Checkout Cancelled</h2>
+    <div class="alert alert-danger" role="alert">
+        Your checkout process was cancelled. If this was a mistake, you can try again.
+    </div>
 </div>
 {% endblock %}

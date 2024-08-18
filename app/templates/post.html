@@ -1,27 +1,26 @@
 {% extends "layout.html" %}
-{% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/post.css') }}">
-{% endblock %}
 {% block content %}
-<div class="post-content">
-    <h2>{{ post.title }}</h2>
+<div class="container mt-4">
+    <h2 class="mb-4">{{ post.title }}</h2>
     <p>{{ post.content }}</p>
 
-    <h3>Replies</h3>
+    <h3 class="mt-4">Replies</h3>
     {% if post.replies %}
-        <ul class="reply-list">
-        {% for reply in post.replies %}
-            <li class="reply-item">{{ reply.content }}</li>
-        {% endfor %}
+        <ul class="list-group mb-4">
+            {% for reply in post.replies %}
+                <li class="list-group-item">{{ reply.content }}</li>
+            {% endfor %}
         </ul>
     {% else %}
-        <p>No replies yet.</p>
+        <p class="text-muted">No replies yet.</p>
     {% endif %}
 
-    <h3>Reply to this Post</h3>
-    <form method="POST" class="reply-form">
-        <textarea name="content" class="form-control" rows="5" required></textarea><br>
-        <input type="submit" value="Add Reply" class="btn btn-primary">
+    <h3 class="mt-4">Reply to this Post</h3>
+    <form method="POST">
+        <div class="form-group">
+            <textarea name="content" class="form-control" rows="5" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Add Reply</button>
     </form>
 </div>
 {% endblock %}

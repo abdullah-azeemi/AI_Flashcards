@@ -1,22 +1,80 @@
 {% extends "layout.html" %}
-{% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/flashcards.css') }}">
-{% endblock %}
 {% block content %}
-<div class="flashcards-content">
-    <h2>Your Flashcards</h2>
+<div class="container mt-4">
+    <h2 class="mb-4">Your Flashcards</h2>
+
     {% if flashcards %}
-        <ul class="flashcard-list">
-        {% for flashcard in flashcards %}
-            <li class="flashcard-item">
-                <strong>{{ flashcard.concept }}:</strong> {{ flashcard.answer }} 
-                <span class="flashcard-language">(Language: {{ flashcard.language }})</span>
-            </li>
-        {% endfor %}
-        </ul>
+        <div class="flashcard-grid">
+            {% for flashcard in flashcards %}
+                <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">
+                            <p><strong>Question:</strong> {{ flashcard.answer.question }}</p>
+                        </div>
+                        <div class="flashcard-back">
+                            <p><strong>Answer:</strong> {{ flashcard.answer.answer }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <p>Number of flashcards: {{ flashcards|length }}</p>
     {% else %}
-        <p>No flashcards saved yet.</p>
+        <p class="text-muted">No flashcards saved yet.</p>
     {% endif %}
-    <a class="btn btn-primary" href="{{ url_for('generate_flashcards') }}">Generate More Flashcards</a>
+
+    <a href="{{ url_for('generate_flashcards') }}" class="btn btn-primary mt-3">Generate More Flashcards</a>
 </div>
+
+<style>
+.flashcard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two columns */
+    gap: 20px; /* Space between cards */
+}
+
+.flashcard {
+    width: 100%; /* Full width within the grid cell */
+    height: 150px; /* Adjust height as needed */
+    perspective: 1000px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flashcard-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.flashcard.flipped .flashcard-inner {
+    transform: rotateY(180deg);
+}
+
+.flashcard-front,
+.flashcard-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.flashcard-front {
+    background: #f9f9f9; /* Front side background */
+}
+
+.flashcard-back {
+    background: #ddd; /* Back side background */
+    transform: rotateY(180deg);
+}
+</style>
 {% endblock %}

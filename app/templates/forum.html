@@ -1,22 +1,20 @@
 {% extends "layout.html" %}
-{% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/forum.css') }}">
-{% endblock %}
 {% block content %}
-<div class="forum-content">
-    <h2>Forum</h2>
-    <a class="btn btn-primary" href="{{ url_for('new_post') }}">Create New Post</a>
+<div class="container mt-4">
+    <h2 class="mb-4">Forum</h2>
+    <a href="{{ url_for('new_post') }}" class="btn btn-primary mb-3">Create New Post</a>
+
     {% if posts %}
-        <ul class="post-list">
-        {% for post in posts %}
-            <li class="post-item">
-                <a href="{{ url_for('post', post_id=post.id) }}" class="post-title">{{ post.title }}</a><br>
-                <p class="post-content">{{ post.content[:100] }}...</p>
-            </li>
-        {% endfor %}
+        <ul class="list-group">
+            {% for post in posts %}
+                <li class="list-group-item">
+                    <a href="{{ url_for('post', post_id=post.id) }}" class="h5">{{ post.title }}</a>
+                    <p class="mb-1">{{ post.content[:100] }}...</p>
+                </li>
+            {% endfor %}
         </ul>
     {% else %}
-        <p>No posts yet.</p>
+        <p class="text-muted">No posts yet.</p>
     {% endif %}
 </div>
 {% endblock %}

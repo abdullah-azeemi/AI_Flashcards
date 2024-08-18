@@ -1,12 +1,12 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="register-content">
-    <h2>Sign Up</h2>
-    <form method="POST">
+<div class="container mt-4">
+    <h2 class="mb-4">Register</h2>
+    <form method="POST" action="">
         {{ form.hidden_tag() }}
         <div class="form-group">
             {{ form.username.label(class="form-label") }}
-            {{ form.username(class="form-control", placeholder="Choose a username") }}
+            {{ form.username(class="form-control", placeholder="Enter your username") }}
         </div>
         <div class="form-group">
             {{ form.email.label(class="form-label") }}
@@ -14,7 +14,7 @@
         </div>
         <div class="form-group">
             {{ form.password.label(class="form-label") }}
-            {{ form.password(class="form-control", placeholder="Choose a password") }}
+            {{ form.password(class="form-control", placeholder="Enter your password") }}
         </div>
         <div class="form-group">
             {{ form.confirm_password.label(class="form-label") }}

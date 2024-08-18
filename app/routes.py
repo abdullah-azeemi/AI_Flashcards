@@ -1,4 +1,7 @@
 import os
+import re
+import json
+import random
 from flask import render_template, url_for, flash, redirect, request
 from app import app, db
 from dotenv import load_dotenv
@@ -8,7 +11,7 @@ from app.ai_assistant import AI_Assistant
 from flask_login import login_user, current_user, logout_user, login_required
 import stripe
 
-load_dotenv()
+load_dotenv(dotenv_path="./.env")
 stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 
 ai_assistant = AI_Assistant()
@@ -70,35 +73,108 @@ def generate_flashcards():
     if request.method == "POST":
         concepts = request.form.getlist("concepts")
         language = request.form["language"]
-        flashcards = ai_assistant.generate_flashcards(concepts, language)
-        for concept, flashcard in zip(concepts, flashcards):
-            new_flashcard = Flashcard(concept=concept, answer=flashcard, user_id=current_user.id, language=language)
-            db.session.add(new_flashcard)
+        Flashcard.query.filter_by(user_id=current_user.id).delete()
         db.session.commit()
+        
+        flashcards = ai_assistant.generate_flashcards(concepts, language)
+        print("Flashcards:", flashcards)
+
+        for concept in concepts:
+            for flashcard in flashcards:
+                serialized_answer = json.dumps(flashcard, ensure_ascii=False)
+                print("Serialized Flashcard:", serialized_answer)
+
+                existing_flashcard = Flashcard.query.filter_by(
+                    concept=concept,
+                    answer=serialized_answer,
+                    user_id=current_user.id
+                ).first()
+                
+                if existing_flashcard:
+                    print(f"Flashcard already exists: {existing_flashcard}")
+                else:
+                    new_flashcard = Flashcard(
+                        concept=concept,
+                        answer=serialized_answer,
+                        user_id=current_user.id,
+                        language=language
+                    )
+                    db.session.add(new_flashcard)
+
+        db.session.commit()
+        current_user.increment_correct_answers()  
+
         flash("Flashcards generated and saved!", "success")
         return redirect(url_for("flashcards"))
+
     return render_template("generate_flashcards.html")
+
+
+
 @app.route("/flashcards")
 @login_required
 def flashcards():
-    user_flashcards = Flashcard.query.filter_by(user_id=current_user.id).all()
+    user_flashcards = Flashcard.query.filter_by(user_id=current_user.id).order_by(Flashcard.id.desc()).all()
+    print("Retrieved Flashcards:", user_flashcards)
+    
+    for flashcard in user_flashcards:
+        try:
+            flashcard.answer = json.loads(flashcard.answer)
+        except json.JSONDecodeError:
+            flashcard.answer = {} 
+
     return render_template("flashcards.html", flashcards=user_flashcards)
+
 
 
 @app.route("/solve_problem")
 @login_required
 def solve_problem():
-    leetcode_problem_link = "https://leetcode.com/problems/two-sum/"
-    new_problem = CodingProblem(problem_link=leetcode_problem_link, user_id=current_user.id)
+    leetcode_problems = [
+        "https://leetcode.com/problems/two-sum/",
+        "https://leetcode.com/problems/reverse-linked-list/",
+        "https://leetcode.com/problems/valid-parentheses/",
+        "https://leetcode.com/problems/merge-two-sorted-lists/",
+        "https://leetcode.com/problems/binary-tree-inorder-traversal/",
+        "https://leetcode.com/problems/maximum-subarray/",
+        "https://leetcode.com/problems/container-with-most-water/",
+        "https://leetcode.com/problems/longest-common-prefix/",
+        "https://leetcode.com/problems/climbing-stairs/",
+        "https://leetcode.com/problems/remove-duplicates-from-sorted-array/",
+        "https://leetcode.com/problems/search-insert-position/",
+        "https://leetcode.com/problems/symmetric-tree/",
+        "https://leetcode.com/problems/linked-list-cycle/",
+        "https://leetcode.com/problems/minimum-depth-of-binary-tree/",
+        "https://leetcode.com/problems/path-sum/",
+        "https://leetcode.com/problems/valid-palindrome/",
+        "https://leetcode.com/problems/maximum-depth-of-binary-tree/",
+        "https://leetcode.com/problems/plus-one/",
+        "https://leetcode.com/problems/palindrome-number/",
+        "https://leetcode.com/problems/invert-binary-tree/",
+        "https://leetcode.com/problems/implement-strstr/",
+        "https://leetcode.com/problems/longest-palindromic-substring/",
+        "https://leetcode.com/problems/rotate-array/",
+        "https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/",
+        "https://leetcode.com/problems/subsets/",
+        "https://leetcode.com/problems/letter-combinations-of-a-phone-number/",
+        "https://leetcode.com/problems/remove-nth-node-from-end-of-list/",
+        "https://leetcode.com/problems/generate-parentheses/",
+        "https://leetcode.com/problems/kth-largest-element-in-an-array/",
+        "https://leetcode.com/problems/group-anagrams/",
+    ]
+    
+    random_problem_link = random.choice(leetcode_problems)
+    new_problem = CodingProblem(problem_link=random_problem_link, user_id=current_user.id)
+    current_user.increment_problems_solved()
     db.session.add(new_problem)
     db.session.commit()
-    return redirect(leetcode_problem_link)  
+    return redirect(random_problem_link)
+
 @app.route("/problems")
 @login_required
 def problems():
     user_problems = CodingProblem.query.filter_by(user_id=current_user.id).all()
     return render_template("problems.html", problems=user_problems)
-
 
 @app.route("/time_complexity", methods=["GET", "POST"])
 @login_required
@@ -106,22 +182,38 @@ def time_complexity():
     if request.method == "POST":
         code_snippet = request.form["code_snippet"]
         user_guess = request.form["complexity"]
-        correct_complexity = "O(n^2)"  # use gemini api to retieve correct complexity
+        correct_complexity = request.form["correct_complexity"]
         correct = (user_guess == correct_complexity)
-        if correct:
-            current_user.correct_answers += 1
-            db.session.commit()
+        print("\n\n\ncode sniper", code_snippet, "user_guess", user_guess, "correct_complexity", correct_complexity, "correct", correct)
+        TimeComplexityQuiz.query.filter_by(user_id=current_user.id).delete()
+        db.session.commit()
 
-        
-        quiz = TimeComplexityQuiz(code_snippet=code_snippet, correct_complexity=correct_complexity, 
-                                  user_id=current_user.id, user_guess=user_guess, correct=correct)
+        quiz = TimeComplexityQuiz(
+            code_snippet=code_snippet,
+            correct_complexity=correct_complexity,
+            user_id=current_user.id,
+            user_guess=user_guess,
+            correct=correct
+        )
         db.session.add(quiz)
         db.session.commit()
-        flash("Your answer has been recorded.", "success")
+
+        if correct:
+            print("Correct Guess")
+            current_user.increment_time_complexity_quizzes_correct()
+            db.session.commit()
+            
+        flash(f"Your answer has been recorded. The correct complexity was {correct_complexity}.", "success" if correct else "danger")
         return redirect(url_for("time_complexity_results"))
-    
-    code_snippet = "for i in range(n):\n    for j in range(n):\n        print(i, j)"  # some example
-    return render_template("time_complexity.html", code_snippet=code_snippet)
+    code_snippet, correct_complexity = ai_assistant.generate_time_complexity_quiz()
+
+    print("code_snippet", code_snippet)
+    print("correct_complexity", correct_complexity)
+    if not code_snippet:
+        flash("Sorry, there was a problem generating the quiz. Please try again later.", "danger")
+        return redirect(url_for("dashboard"))
+
+    return render_template("time_complexity.html", code_snippet=code_snippet, correct_complexity=correct_complexity)
 
 
 @app.route("/time_complexity_results")
@@ -162,7 +254,7 @@ def post(post_id):
         return redirect(url_for("post", post_id=post.id))
     return render_template("post.html", post=post)
 
-@app.route("/checkout", methods=["POST"])
+@app.route("/checkout", methods=["POST", "GET"])
 @login_required
 def checkout():
     try:
@@ -187,6 +279,7 @@ def checkout():
         flash("An error occurred: " + str(e), "danger")
         return redirect(url_for('home'))
 
+
 @app.route("/checkout/success")
 @login_required
 def checkout_success():
@@ -201,3 +294,9 @@ def checkout_cancel():
 @login_required
 def dashboard():
     return render_template("dashboard.html", user=current_user)
+
+
+if __name__ == "main":
+    print(stripe.api_key)
+
+

@@ -1,11 +1,9 @@
 {% extends "layout.html" %}
-{% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/checkout.css') }}">
-{% endblock %}
 {% block content %}
-<div class="checkout-container success">
-    <h2>Checkout Success</h2>
-    <p>Thank you for your purchase! Your premium membership has been activated.</p>
-    <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Go to Dashboard</a>
+<div class="container mt-4 text-center">
+    <h2 class="mb-4">Checkout Success</h2>
+    <div class="alert alert-success" role="alert">
+        Thank you for your purchase! Your premium membership has been activated.
+    </div>
 </div>
 {% endblock %}

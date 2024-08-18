@@ -1,26 +1,25 @@
 {% extends "layout.html" %}
-{% block extra_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/time_complexity_results.css') }}">
-{% endblock %}
 {% block content %}
-<div class="time-complexity-results-container">
-    <h2>Your Time Complexity Quiz Results</h2>
+<div class="container mt-4">
+    <h2 class="mb-4">Your Time Complexity Quiz Results</h2>
+
     {% if quizzes %}
-        <ul class="quiz-results-list">
-        {% for quiz in quizzes %}
-            <li class="quiz-result-item">
-                <pre class="code-snippet">{{ quiz.code_snippet }}</pre>
-                Your Guess: {{ quiz.user_guess }} - Correct Answer: {{ quiz.correct_complexity }}<br>
-                {% if quiz.correct %}
-                    <span class="result correct">Correct</span>
-                {% else %}
-                    <span class="result incorrect">Incorrect</span>
-                {% endif %}
-            </li>
-        {% endfor %}
+        <ul class="list-group">
+            {% for quiz in quizzes %}
+                <li class="list-group-item mb-3">
+                    <pre class="bg-light p-3 rounded">{{ quiz.code_snippet }}</pre>
+                    <p class="mt-2 mb-1">
+                        <strong>Your Guess:</strong> {{ quiz.user_guess }}<br>
+                        <strong>Correct Answer:</strong> {{ quiz.user_guess }}
+                    </p>
+                    <span class="badge badge-{{ 'success' if quiz.correct else 'danger' }}">
+                        {{ 'Correct' if quiz.correct else 'Incorrect' }}
+                    </span>
+                </li>
+            {% endfor %}
         </ul>
     {% else %}
-        <p>No quiz results available.</p>
+        <p class="text-muted">No quiz results available.</p>
     {% endif %}
 </div>
 {% endblock %}
