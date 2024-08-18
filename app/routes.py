@@ -1,4 +1,5 @@
 import os
+import json
 from flask import render_template, url_for, flash, redirect, request
 from app import app, db
 from dotenv import load_dotenv
@@ -8,7 +9,7 @@ from app.ai_assistant import AI_Assistant
 from flask_login import login_user, current_user, logout_user, login_required
 import stripe
 
-load_dotenv()
+load_dotenv(dotenv_path="./.env")
 stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 
 ai_assistant = AI_Assistant()
@@ -70,19 +71,57 @@ def generate_flashcards():
     if request.method == "POST":
         concepts = request.form.getlist("concepts")
         language = request.form["language"]
-        flashcards = ai_assistant.generate_flashcards(concepts, language)
-        for concept, flashcard in zip(concepts, flashcards):
-            new_flashcard = Flashcard(concept=concept, answer=flashcard, user_id=current_user.id, language=language)
-            db.session.add(new_flashcard)
+        Flashcard.query.filter_by(user_id=current_user.id).delete()
         db.session.commit()
+        
+       # print("Concepts:", concepts)
+        flashcards = ai_assistant.generate_flashcards(concepts, language)
+        print("Flashcards:", flashcards)
+         
+        #i = 1 
+        for concept in concepts:
+            for flashcard in flashcards:
+                    serialized_answer = json.dumps(flashcard, ensure_ascii=False)
+                    print("Serialized Flashcard:", serialized_answer)
+                    # print(i)
+                    # i += 1
+                    existing_flashcard = Flashcard.query.filter_by(
+                        concept=concept,
+                        answer=serialized_answer,
+                        user_id=current_user.id
+                    ).first()
+                    
+                    if existing_flashcard:
+                        print(f"Flashcard already exists: {existing_flashcard}")
+                    else:
+                        new_flashcard = Flashcard(
+                            concept=concept,
+                            answer=serialized_answer,
+                            user_id=current_user.id,
+                            language=language
+                        )
+                        db.session.add(new_flashcard)
+            
+            db.session.commit()
         flash("Flashcards generated and saved!", "success")
         return redirect(url_for("flashcards"))
     return render_template("generate_flashcards.html")
+
+
 @app.route("/flashcards")
 @login_required
 def flashcards():
-    user_flashcards = Flashcard.query.filter_by(user_id=current_user.id).all()
+    user_flashcards = Flashcard.query.filter_by(user_id=current_user.id).order_by(Flashcard.id.desc()).all()
+    print("Retrieved Flashcards:", user_flashcards)
+    
+    for flashcard in user_flashcards:
+        try:
+            flashcard.answer = json.loads(flashcard.answer)
+        except json.JSONDecodeError:
+            flashcard.answer = {} 
+
     return render_template("flashcards.html", flashcards=user_flashcards)
+
 
 
 @app.route("/solve_problem")
@@ -106,21 +145,27 @@ def time_complexity():
     if request.method == "POST":
         code_snippet = request.form["code_snippet"]
         user_guess = request.form["complexity"]
-        correct_complexity = "O(n^2)"  # use gemini api to retieve correct complexity
+        correct_complexity = "O(n^2)" 
         correct = (user_guess == correct_complexity)
+        
+        quiz = TimeComplexityQuiz(
+            code_snippet=code_snippet,
+            correct_complexity=correct_complexity,
+            user_id=current_user.id,
+            user_guess=user_guess,
+            correct=correct
+        )
+        db.session.add(quiz)
+        db.session.commit()
+
         if correct:
             current_user.correct_answers += 1
             db.session.commit()
 
-        
-        quiz = TimeComplexityQuiz(code_snippet=code_snippet, correct_complexity=correct_complexity, 
-                                  user_id=current_user.id, user_guess=user_guess, correct=correct)
-        db.session.add(quiz)
-        db.session.commit()
         flash("Your answer has been recorded.", "success")
         return redirect(url_for("time_complexity_results"))
     
-    code_snippet = "for i in range(n):\n    for j in range(n):\n        print(i, j)"  # some example
+    code_snippet = "for i in range(n):\n    for j in range(n):\n        print(i, j)"  # Example snippet
     return render_template("time_complexity.html", code_snippet=code_snippet)
 
 
@@ -201,3 +246,9 @@ def checkout_cancel():
 @login_required
 def dashboard():
     return render_template("dashboard.html", user=current_user)
+
+
+if __name__ == "main":
+    print(stripe.api_key)
+
+
