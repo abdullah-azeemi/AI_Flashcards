@@ -1,17 +1,23 @@
 {% extends "layout.html" %}
 {% block content %}
-<h2>Time Complexity Quiz</h2>
-<p>Analyze the following code snippet and guess its time complexity:</p>
-<pre>{{ code_snippet }}</pre>
-<form method="POST">
-    <label for="complexity">Your Guess:</label><br>
-    <select name="complexity">
-        <option value="O(1)">O(1)</option>
-        <option value="O(n)">O(n)</option>
-        <option value="O(n^2)">O(n^2)</option>
-        <option value="O(log n)">O(log n)</option>
-        <option value="O(n log n)">O(n log n)</option>
-    </select><br><br>
-    <input type="submit" value="Submit Answer">
-</form>
+<div class="container mt-4">
+    <h2 class="mb-4">Time Complexity Quiz</h2>
+    <p class="mb-4">Analyze the following code snippet and guess its time complexity:</p>
+
+    <pre class="bg-light p-3 rounded">{{ code_snippet }}</pre>
+
+    <form method="POST" class="mt-4">
+        <div class="form-group">
+            <label for="complexity" class="form-label">Your Guess:</label>
+            <select name="complexity" id="complexity" class="form-control">
+                <option value="O(1)">O(1)</option>
+                <option value="O(n)">O(n)</option>
+                <option value="O(n^2)">O(n^2)</option>
+                <option value="O(log n)">O(log n)</option>
+                <option value="O(n log n)">O(n log n)</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Submit Answer</button>
+    </form>
+</div>
 {% endblock %}

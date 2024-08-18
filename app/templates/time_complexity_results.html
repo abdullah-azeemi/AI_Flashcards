@@ -1,18 +1,25 @@
 {% extends "layout.html" %}
 {% block content %}
-<h2>Your Time Complexity Quiz Results</h2>
-{% if quizzes %}
-    <ul>
-    {% for quiz in quizzes %}
-        <li>
-            <pre>{{ quiz.code_snippet }}</pre>
-            Your Guess: {{ quiz.user_guess }} - Correct Answer: {{ quiz.correct_complexity }}<br>
-            {% if quiz.correct %}
-                <span style="color: green;">Correct</span>
-            {% else %}
-                <span style="color: red;">Incorrect</span>
-            {% endif %}
-        </li>
-    {% endfor %}
-    </ul>
-{% else
+<div class="container mt-4">
+    <h2 class="mb-4">Your Time Complexity Quiz Results</h2>
+
+    {% if quizzes %}
+        <ul class="list-group">
+            {% for quiz in quizzes %}
+                <li class="list-group-item mb-3">
+                    <pre class="bg-light p-3 rounded">{{ quiz.code_snippet }}</pre>
+                    <p class="mt-2 mb-1">
+                        <strong>Your Guess:</strong> {{ quiz.user_guess }}<br>
+                        <strong>Correct Answer:</strong> {{ quiz.correct_complexity }}
+                    </p>
+                    <span class="badge badge-{{ 'success' if quiz.correct else 'danger' }}">
+                        {{ 'Correct' if quiz.correct else 'Incorrect' }}
+                    </span>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-muted">No quiz results available.</p>
+    {% endif %}
+</div>
+{% endblock %}

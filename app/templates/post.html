@@ -1,22 +1,26 @@
 {% extends "layout.html" %}
 {% block content %}
-<h2>{{ post.title }}</h2>
-<p>{{ post.content }}</p>
+<div class="container mt-4">
+    <h2 class="mb-4">{{ post.title }}</h2>
+    <p>{{ post.content }}</p>
 
-<h3>Replies</h3>
-{% if post.replies %}
-    <ul>
-    {% for reply in post.replies %}
-        <li>{{ reply.content }}</li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No replies yet.</p>
-{% endif %}
+    <h3 class="mt-4">Replies</h3>
+    {% if post.replies %}
+        <ul class="list-group mb-4">
+            {% for reply in post.replies %}
+                <li class="list-group-item">{{ reply.content }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-muted">No replies yet.</p>
+    {% endif %}
 
-<h3>Reply to this Post</h3>
-<form method="POST">
-    <textarea name="content" rows="5" required></textarea><br><br>
-    <input type="submit" value="Add Reply">
-</form>
+    <h3 class="mt-4">Reply to this Post</h3>
+    <form method="POST">
+        <div class="form-group">
+            <textarea name="content" class="form-control" rows="5" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Add Reply</button>
+    </form>
+</div>
 {% endblock %}

@@ -1,4 +1,8 @@
 {% extends "layout.html" %}
 {% block content %}
-<h1>Welcome to AI Flashcards!</h1>
+<div class="jumbotron text-center">
+    <h1 class="display-4">Welcome to CodeFlash Academy!</h1>
+    <p class="lead">Explore and create flashcards to boost your learning experience.</p>
+    <a class="btn btn-primary btn-lg" href="{{ url_for('register') }}" role="button">Get Started</a>
+</div>
 {% endblock %}

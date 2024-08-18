@@ -1,14 +1,20 @@
 {% extends "layout.html" %}
 {% block content %}
-<h2>Your Flashcards</h2>
-{% if flashcards %}
-    <ul>
-    {% for flashcard in flashcards %}
-        <li><strong>{{ flashcard.concept }}:</strong> {{ flashcard.answer }} (Language: {{ flashcard.language }})</li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No flashcards saved yet.</p>
-{% endif %}
-<a href="{{ url_for('generate_flashcards') }}">Generate More Flashcards</a>
+<div class="container mt-4">
+    <h2 class="mb-4">Your Flashcards</h2>
+
+    {% if flashcards %}
+        <ul class="list-group">
+            {% for flashcard in flashcards %}
+                <li class="list-group-item">
+                    <strong>{{ flashcard.concept }}:</strong> {{ flashcard.answer }} <span class="badge badge-secondary">Language: {{ flashcard.language }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-muted">No flashcards saved yet.</p>
+    {% endif %}
+
+    <a href="{{ url_for('generate_flashcards') }}" class="btn btn-primary mt-3">Generate More Flashcards</a>
+</div>
 {% endblock %}
