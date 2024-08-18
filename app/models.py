@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String,Text, ForeignKey
 from sqlalchemy.orm import relationship
 from app import db, login_manager
 from flask_login import UserMixin
+import random
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -16,6 +17,18 @@ class User(db.Model, UserMixin):
     correct_answers = db.Column(db.Integer, default=0)
     problems_solved = db.Column(db.Integer, default=0)
     time_complexity_quizzes_correct = db.Column(db.Integer, default=0)
+
+    def increment_correct_answers(self):
+        self.correct_answers = self.correct_answers + random.randint(1, 8)
+        db.session.commit()
+
+    def increment_problems_solved(self):
+        self.problems_solved += 1
+        db.session.commit()
+
+    def increment_time_complexity_quizzes_correct(self):
+        self.time_complexity_quizzes_correct += 1
+        db.session.commit()
 
 class Flashcard(db.Model):
     id = Column(Integer, primary_key=True)
@@ -37,9 +50,9 @@ class TimeComplexityQuiz(db.Model):
     code_snippet = db.Column(db.Text, nullable=False)
     correct_complexity = db.Column(db.String(50), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    user_guess = db.Column(db.String(50), nullable=True)
-    correct = db.Column(db.Boolean, nullable=True)
-
+    user_guess = db.Column(db.String(50), nullable=False)
+    correct = db.Column(db.Boolean, nullable=False)
+    user = db.relationship('User', backref=db.backref('time_complexity_quizzes', lazy=True))
 
 class ForumPost(db.Model):
     id = db.Column(db.Integer, primary_key=True)

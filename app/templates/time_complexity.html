@@ -7,6 +7,8 @@
     <pre class="bg-light p-3 rounded">{{ code_snippet }}</pre>
 
     <form method="POST" class="mt-4">
+        <input type="hidden" name="code_snippet" value="{{ code_snippet }}">
+        <input type="hidden" name="correct_complexity" value="{{ correct_complexity }}">
         <div class="form-group">
             <label for="complexity" class="form-label">Your Guess:</label>
             <select name="complexity" id="complexity" class="form-control">
@@ -18,6 +20,6 @@
             </select>
         </div>
         <button type="submit" class="btn btn-primary mt-3">Submit Answer</button>
-    </form>
+    </form>    
 </div>
 {% endblock %}

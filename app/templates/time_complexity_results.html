@@ -10,7 +10,7 @@
                     <pre class="bg-light p-3 rounded">{{ quiz.code_snippet }}</pre>
                     <p class="mt-2 mb-1">
                         <strong>Your Guess:</strong> {{ quiz.user_guess }}<br>
-                        <strong>Correct Answer:</strong> {{ quiz.correct_complexity }}
+                        <strong>Correct Answer:</strong> {{ quiz.user_guess }}
                     </p>
                     <span class="badge badge-{{ 'success' if quiz.correct else 'danger' }}">
                         {{ 'Correct' if quiz.correct else 'Incorrect' }}

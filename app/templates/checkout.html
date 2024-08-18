@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="checkout-content">
+    <h2>Checkout</h2>
+    <p>You are about to purchase a <strong>Premium Membership</strong> for $10.00.</p>
+    <form action="{{ url_for('checkout') }}" method="POST">
+        <button type="submit" class="btn-primary">Proceed to Payment</button>
+    </form>
+</div>
+{% endblock %}
